@@ -16,10 +16,6 @@ logs/
 checkpoints*/
 b7336/
 
-# Nested clones / scratch
-qvac-fabric-llm.cpp/
-
 # OS/editor noise
 Thumbs.db
 .DS_Store
-

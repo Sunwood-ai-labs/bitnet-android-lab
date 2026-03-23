@@ -1,0 +1,20 @@
+﻿diff --git a/ggml/src/ggml-vulkan/ggml-vulkan.cpp b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+index b718fb8c..c436992d 100644
+--- a/ggml/src/ggml-vulkan/ggml-vulkan.cpp
++++ b/ggml/src/ggml-vulkan/ggml-vulkan.cpp
+@@ -5098,12 +5098,9 @@ static vk_device ggml_vk_get_device(size_t idx) {
+ #endif
+         device->name = GGML_VK_NAME + std::to_string(idx);
+ 
+-        device_create_info = {
+-            vk::DeviceCreateFlags(),
+-            device_queue_create_infos,
+-            {},
+-            device_extensions
+-        };
++        device_create_info = vk::DeviceCreateInfo{};
++        device_create_info.setQueueCreateInfos(device_queue_create_infos);
++        device_create_info.setPEnabledExtensionNames(device_extensions);
+         device_create_info.setPNext(&device_features2);
+         device->device = device->physical_device.createDevice(device_create_info);
+ 
