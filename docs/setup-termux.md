@@ -17,7 +17,7 @@ The original lab used:
 
 ```powershell
 adb forward tcp:8022 tcp:8022
-ssh -p 8022 u0_a202@127.0.0.1
+ssh -p 8022 your-termux-user@127.0.0.1
 ```
 
 Use your own SSH identity and host settings.
@@ -76,4 +76,3 @@ This repo intentionally does not bundle those assets.
 ## 7. Run The Helper Scripts
 
 The scripts in [`scripts/termux/`](../scripts/termux/) default to `QVAC_ROOT="$HOME/qvac-bitnet"` and can be overridden with environment variables.
-
