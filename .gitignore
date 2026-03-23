@@ -9,12 +9,12 @@ tmp*/
 *.aar
 
 # Large local experiment artifacts
-models/
-adapters/
-data/
-logs/
-checkpoints*/
-b7336/
+/models/
+/adapters/
+/data/
+/logs/
+/checkpoints*/
+/b7336/
 
 # OS/editor noise
 Thumbs.db

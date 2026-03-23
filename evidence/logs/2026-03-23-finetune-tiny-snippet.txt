@@ -1,0 +1,8 @@
+Using LoRA parameters: rank=8, alpha=16.0, seed=42
+Training for 1 epochs
+Training split: datapoints=5, batches_per_epoch=4
+Optimizer: adamw scheduler=constant lr=1.0000e-05 wd=1.0000e-02 total_steps=4
+train: [██▏     ] data=0000009/0000032 loss=8.50082±nan acc=0.00±0.00% t=00:02:18 ETA=00:05:53
+Successfully saved LoRA adapter with 192 tensors to: $HOME/qvac-bitnet/checkpoints-tiny/checkpoint_step_00000001/model.gguf
+train: [███▍    ] data=0000014/0000032 loss=3.04376±1.12914 acc=60.42±5.02% t=00:13:48 ETA=00:17:44
+Successfully saved LoRA adapter with 192 tensors to: $HOME/qvac-bitnet/checkpoints-tiny/checkpoint_step_00000006/model.gguf

@@ -1,0 +1,10 @@
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Mali-G52 MC2 (Mali-G52 MC2) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 8 | shared memory: 32768 | int dot: 1 | matrix cores: none
+print_backend_buffers_info: offloaded 25/25 layers to GPU
+llama_adapter_lora_init_impl: loading lora adapter from '$HOME/qvac-bitnet/checkpoints-tiny/checkpoint_step_00000006/model.gguf' ...
+Q: Does vitamin D supplementation prevent fractures?
+A: Yes. Vitamin D supplementation
+common_perf_print:        load time =   74122.91 ms
+common_perf_print: prompt eval time =   74118.00 ms /    18 tokens
+common_perf_print:        eval time =    6061.69 ms /     7 runs
+common_perf_print:       total time =   80191.45 ms /    25 tokens
