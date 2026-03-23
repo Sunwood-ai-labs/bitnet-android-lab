@@ -1,0 +1,25 @@
+# Local temp and verification clones
+tmp*/
+.tmp_*
+
+# Downloaded archives and build artifacts
+*.zip
+*.apk
+*.aab
+*.aar
+
+# Large local experiment artifacts
+models/
+adapters/
+data/
+logs/
+checkpoints*/
+b7336/
+
+# Nested clones / scratch
+qvac-fabric-llm.cpp/
+
+# OS/editor noise
+Thumbs.db
+.DS_Store
+
