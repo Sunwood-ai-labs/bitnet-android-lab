@@ -23,3 +23,28 @@
   - `A:`
   - `total time =`
 
+## Claim: TQ1 published-adapter rerun provides a single-run throughput reference
+
+- Date: 2026-03-25
+- Command family: direct `llama-cli` rerun over the existing Windows -> `adb forward` -> SSH -> Termux path
+- Evidence file: [`./logs/2026-03-25-infer-tq1-snippet.txt`](./logs/2026-03-25-infer-tq1-snippet.txt)
+- Supporting lines expected:
+  - `Mali-G52 MC2`
+  - `$HOME/qvac-bitnet/models/bitnet-xl.tq1_0.gguf`
+  - `$HOME/qvac-bitnet/adapters/tq1_0-biomed-trained-adapter.gguf`
+  - `prompt eval time =`
+  - `eval time =`
+  - `total time =`
+
+## Claim: TQ2 fast checkpoint rerun provides a shortened single-run throughput reference
+
+- Date: 2026-03-25
+- Command family: direct `llama-cli` rerun over the existing Windows -> `adb forward` -> SSH -> Termux path
+- Evidence file: [`./logs/2026-03-25-infer-tq2-fast-snippet.txt`](./logs/2026-03-25-infer-tq2-fast-snippet.txt)
+- Supporting lines expected:
+  - `Mali-G52 MC2`
+  - `$HOME/qvac-bitnet/models/bitnet-xl.tq2_0.gguf`
+  - `$HOME/qvac-bitnet/checkpoints-tiny/checkpoint_step_00000006/model.gguf`
+  - `prompt eval time =`
+  - `eval time =`
+  - `total time =`

@@ -59,6 +59,7 @@ Confirmed again from the connected device on March 25, 2026:
 - The successful path used a local patched source build, not a stock official Android bundle.
 - The TQ2 inference success used `checkpoint_step_00000006/model.gguf` as a temporary checkpoint artifact, not a verified final `--output-adapter`.
 - The fast inference result proves text generation happened on-device. It does not prove answer quality or benchmark-level correctness.
+- Any `tokens per second` (`tok/s`) figures in this repo are single-run throughput references documented in [`docs/experiment-log.md`](./docs/experiment-log.md), not benchmark medians or stock-device claims.
 - Shutdown still emitted `FORTIFY: pthread_mutex_lock called on a destroyed mutex`, so repeated-run and long-run stability remain unverified.
 - The tiny training smoke run still has one unresolved inconsistency: the input file was a 2-line subset, while runtime logs reported `datapoints=5`.
 - The CPU microarchitecture row is an inference from ARM CPU part IDs exposed by `/proc/cpuinfo`, not a direct vendor marketing string.
@@ -85,6 +86,8 @@ Confirmed again from the connected device on March 25, 2026:
 - [`evidence/manifest.md`](./evidence/manifest.md) maps each public claim to scripts, dates, and evidence files.
 - [`evidence/logs/2026-03-23-finetune-tiny-snippet.txt`](./evidence/logs/2026-03-23-finetune-tiny-snippet.txt) shows tiny training progression and checkpoint saves.
 - [`evidence/logs/2026-03-23-infer-tq2-checkpoint6-fast-snippet.txt`](./evidence/logs/2026-03-23-infer-tq2-checkpoint6-fast-snippet.txt) shows the fast checkpoint inference run.
+- [`evidence/logs/2026-03-25-infer-tq1-snippet.txt`](./evidence/logs/2026-03-25-infer-tq1-snippet.txt) shows a rerun of the published TQ1 adapter path with perf lines.
+- [`evidence/logs/2026-03-25-infer-tq2-fast-snippet.txt`](./evidence/logs/2026-03-25-infer-tq2-fast-snippet.txt) shows a rerun of the shortened TQ2 checkpoint path with perf lines.
 
 ## Documentation
 

@@ -1,6 +1,6 @@
 # Experiment Log
 
-Date of the recorded lab session: March 23, 2026.
+Base lab session: March 23, 2026. Follow-up runtime spot checks for device specs and throughput references: March 25, 2026.
 
 ## Summary
 
@@ -15,6 +15,8 @@ Date of the recorded lab session: March 23, 2026.
 
 - Training snippet: [`../evidence/logs/2026-03-23-finetune-tiny-snippet.txt`](../evidence/logs/2026-03-23-finetune-tiny-snippet.txt)
 - Fast inference snippet: [`../evidence/logs/2026-03-23-infer-tq2-checkpoint6-fast-snippet.txt`](../evidence/logs/2026-03-23-infer-tq2-checkpoint6-fast-snippet.txt)
+- TQ1 throughput rerun snippet: [`../evidence/logs/2026-03-25-infer-tq1-snippet.txt`](../evidence/logs/2026-03-25-infer-tq1-snippet.txt)
+- TQ2 throughput rerun snippet: [`../evidence/logs/2026-03-25-infer-tq2-fast-snippet.txt`](../evidence/logs/2026-03-25-infer-tq2-fast-snippet.txt)
 - Claim mapping: [`../evidence/manifest.md`](../evidence/manifest.md)
 
 ## Key Runtime Notes
@@ -34,8 +36,26 @@ Date of the recorded lab session: March 23, 2026.
 - Successful fast inference settings: `-c 128 -b 8 -ub 8 --no-warmup -n 8`
 - Checkpoint artifact used for fast inference: `checkpoint_step_00000006/model.gguf`
 
+## Single-Run Throughput Reference (`tok/s`)
+
+`Tokens per second` (`tok/s`) is the most common quick-look throughput metric for LLM inference. For this repo, the table below separates prompt processing, generation, and wall-clock end-to-end throughput so the numbers are not conflated.
+
+| Run | Prompt tokens | Prompt `tok/s` | Generation tokens | Generation `tok/s` | End-to-end `tok/s` | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| TQ1 base + published biomedical adapter rerun (`2026-03-25`) | `18` | `0.17` | `63` | `0.63` | `0.39` | Single run on the published adapter path |
+| TQ2 fast checkpoint rerun (`2026-03-25`) | `18` | `0.21` | `7` | `0.13` | `0.18` | Single run with shortened settings and `checkpoint_step_00000006/model.gguf` |
+
+### Calculation Notes
+
+- TQ1 end-to-end throughput was derived from `81 total tokens / 207.29636 s = 0.3907 tok/s`, using the `common_perf_print: total time` line.
+- TQ2 end-to-end throughput was derived from `25 total tokens / 138.11535 s = 0.1810 tok/s`, again using the `common_perf_print: total time` line.
+- Prompt and generation throughput values match the tool-reported `common_perf_print` lines from the rerun snippets.
+- The derived end-to-end numbers include model load time, prompt evaluation time, and generation time together.
+- The TQ2 rerun used `-c 128 -b 8 -ub 8 --no-warmup -n 8`, so that row is a shortened smoke configuration rather than a full-length serving profile.
+
 ## Known Unresolved Items
 
 - Final `--output-adapter` generation was not the verified success point for the public claim.
 - `FORTIFY: pthread_mutex_lock called on a destroyed mutex` remained at shutdown.
 - The tiny dataset line count and runtime `datapoints=5` log are still inconsistent.
+- Repeated-run stability and thermal variance were not characterized, so the `tok/s` figures above should be treated as single-run references rather than sustained-speed claims.

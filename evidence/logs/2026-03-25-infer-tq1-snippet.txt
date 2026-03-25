@@ -1,0 +1,11 @@
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Mali-G52 MC2 (Mali-G52 MC2) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 8 | shared memory: 32768 | int dot: 1 | matrix cores: none
+llama_model_loader: loaded meta data with 33 key-value pairs and 266 tensors from $HOME/qvac-bitnet/models/bitnet-xl.tq1_0.gguf (version GGUF V3 (latest))
+llama_adapter_lora_init_impl: loading lora adapter from '$HOME/qvac-bitnet/adapters/tq1_0-biomed-trained-adapter.gguf' ...
+Q: Does vitamin D supplementation prevent fractures?
+A: Yes. Rationale: In older adults with low vitamin D levels, supplementing with vitamin D3 may reduce the incidence of fractures.
+
+common_perf_print:        load time =   38298.36 ms
+common_perf_print: prompt eval time =  107882.41 ms /    18 tokens ( 5993.47 ms per token,     0.17 tokens per second)
+common_perf_print:        eval time =   99346.52 ms /    63 runs   ( 1576.93 ms per token,     0.63 tokens per second)
+common_perf_print:       total time =  207296.36 ms /    81 tokens
