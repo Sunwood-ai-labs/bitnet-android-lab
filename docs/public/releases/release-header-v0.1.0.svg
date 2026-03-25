@@ -1,54 +1,84 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">bitnet-android-lab release header v0.1.0</title>
-  <desc id="desc">A release banner for bitnet-android-lab v0.1.0 showing the project branding, Android device motif, and release highlights.</desc>
+  <desc id="desc">Release banner for bitnet-android-lab v0.1.0 with a phone motif, version badge, and short release highlights.</desc>
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#07111d"/>
+      <stop offset="55%" stop-color="#0b1324"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <linearGradient id="panel" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f766e"/>
+    <linearGradient id="teal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14b8a6"/>
       <stop offset="100%" stop-color="#0369a1"/>
     </linearGradient>
     <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#22c55e"/>
       <stop offset="100%" stop-color="#38bdf8"/>
     </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#020617" flood-opacity="0.42"/>
+    </filter>
   </defs>
+
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="1088" cy="98" r="112" fill="#0ea5e9" opacity="0.08"/>
-  <circle cx="1110" cy="520" r="132" fill="#22c55e" opacity="0.08"/>
-  <rect x="76" y="72" width="360" height="486" rx="48" fill="#111827" stroke="#38bdf8" stroke-width="10"/>
-  <rect x="108" y="110" width="296" height="324" rx="28" fill="#e0f2fe"/>
-  <rect x="198" y="484" width="116" height="14" rx="7" fill="#7dd3fc"/>
-  <rect x="150" y="164" width="64" height="64" rx="16" fill="#0284c7"/>
-  <rect x="232" y="164" width="64" height="64" rx="16" fill="#22c55e"/>
-  <rect x="314" y="164" width="64" height="64" rx="16" fill="#0284c7"/>
-  <rect x="150" y="268" width="158" height="18" rx="9" fill="#0f172a" opacity="0.18"/>
-  <rect x="150" y="304" width="192" height="22" rx="11" fill="#0f172a" opacity="0.18"/>
-  <rect x="150" y="346" width="216" height="18" rx="9" fill="#0f172a" opacity="0.18"/>
-  <rect x="382" y="138" width="16" height="300" rx="8" fill="#7dd3fc"/>
-  <rect x="382" y="280" width="16" height="84" rx="8" fill="#22c55e"/>
-  <rect x="516" y="84" width="604" height="78" rx="24" fill="#0b1220" stroke="#1e293b" stroke-width="3"/>
-  <rect x="550" y="108" width="188" height="30" rx="15" fill="#1e293b"/>
-  <rect x="550" y="108" width="126" height="30" rx="15" fill="url(#accent)"/>
-  <text x="768" y="128" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="20" font-weight="700">INITIAL PUBLIC RELEASE</text>
-  <text x="516" y="246" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="56" font-weight="700">bitnet-android-lab</text>
-  <text x="516" y="304" fill="#38bdf8" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="92" font-weight="800">v0.1.0</text>
-  <text x="516" y="356" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="26">Initial public release for the Android Termux BitNet LoRA lab, evidence pack, and live monitoring helpers.</text>
-  <rect x="516" y="404" width="192" height="118" rx="24" fill="url(#panel)" opacity="0.92"/>
-  <rect x="722" y="404" width="192" height="118" rx="24" fill="#111827"/>
-  <rect x="928" y="404" width="192" height="118" rx="24" fill="#111827"/>
-  <text x="540" y="448" fill="#e0f2fe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18" font-weight="700">Evidence-backed lab notes</text>
-  <text x="540" y="478" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="34" font-weight="800">Real-device</text>
-  <text x="540" y="506" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18">patches, logs, throughput,</text>
-  <text x="540" y="530" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18">and provenance.</text>
-  <text x="746" y="448" fill="#7dd3fc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18" font-weight="700">Monitoring helpers</text>
-  <text x="746" y="478" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="34" font-weight="800">Windows + Termux</text>
-  <text x="746" y="506" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18">ADB watcher, per-core bars,</text>
-  <text x="746" y="530" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18">gotop, htop, and bmon.</text>
-  <text x="952" y="448" fill="#22c55e" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18" font-weight="700">Published docs</text>
-  <text x="952" y="478" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="34" font-weight="800">Bilingual site</text>
-  <text x="952" y="506" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18">VitePress docs, CI, and</text>
-  <text x="952" y="530" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18">GitHub Pages deployment.</text>
+  <circle cx="1085" cy="110" r="130" fill="#0ea5e9" opacity="0.08"/>
+  <circle cx="1118" cy="520" r="150" fill="#22c55e" opacity="0.06"/>
+  <path d="M0 540 C180 500 250 620 435 590 L435 630 L0 630 Z" fill="#0b1220" opacity="0.82"/>
+  <path d="M845 0 C965 42 1100 18 1200 84 L1200 0 Z" fill="#111827" opacity="0.44"/>
+
+  <g opacity="0.18">
+    <path d="M486 78 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 132 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 186 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 240 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 294 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 348 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 402 H1116" stroke="#1e293b" stroke-width="2"/>
+    <path d="M486 456 H1116" stroke="#1e293b" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="74" y="70" width="324" height="494" rx="48" fill="#0f172a" stroke="#38bdf8" stroke-width="9"/>
+    <rect x="104" y="106" width="264" height="338" rx="28" fill="#dff4ff"/>
+    <rect x="173" y="480" width="126" height="14" rx="7" fill="#7dd3fc"/>
+    <rect x="136" y="166" width="56" height="56" rx="14" fill="#0284c7"/>
+    <rect x="208" y="166" width="56" height="56" rx="14" fill="#22c55e"/>
+    <rect x="280" y="166" width="56" height="56" rx="14" fill="#0284c7"/>
+    <rect x="136" y="262" width="142" height="16" rx="8" fill="#0f172a" opacity="0.16"/>
+    <rect x="136" y="296" width="178" height="20" rx="10" fill="#0f172a" opacity="0.18"/>
+    <rect x="136" y="336" width="200" height="16" rx="8" fill="#0f172a" opacity="0.16"/>
+    <rect x="344" y="146" width="12" height="260" rx="6" fill="#7dd3fc"/>
+    <rect x="344" y="260" width="12" height="86" rx="6" fill="#22c55e"/>
+  </g>
+
+  <rect x="458" y="74" width="662" height="74" rx="22" fill="#0b1220" stroke="#1e293b" stroke-width="3"/>
+  <rect x="484" y="96" width="188" height="30" rx="15" fill="#111827"/>
+  <rect x="484" y="96" width="126" height="30" rx="15" fill="url(#accent)"/>
+  <text x="697" y="117" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18" font-weight="700">INITIAL PUBLIC RELEASE</text>
+
+  <text x="458" y="236" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="50" font-weight="700">bitnet-android-lab</text>
+  <text x="458" y="318" fill="#38bdf8" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="88" font-weight="800">v0.1.0</text>
+  <text x="458" y="372" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="26" font-weight="600">Android Termux BitNet lab</text>
+  <text x="458" y="410" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24">Patches, evidence, bilingual docs, and an ADB watcher.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="458" y="454" width="196" height="110" rx="24" fill="url(#teal)" opacity="0.96"/>
+    <rect x="691" y="454" width="196" height="110" rx="24" fill="#111827"/>
+    <rect x="924" y="454" width="196" height="110" rx="24" fill="#111827"/>
+  </g>
+
+  <text x="482" y="495" fill="#e6fffb" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16" font-weight="700">EVIDENCE + PATCHES</text>
+  <text x="482" y="530" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24" font-weight="800">Real-device lab</text>
+  <text x="482" y="555" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">Scripts, logs, and</text>
+  <text x="482" y="576" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">minimal Android fixes.</text>
+
+  <text x="715" y="495" fill="#7dd3fc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16" font-weight="700">ADB WATCHER</text>
+  <text x="715" y="530" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24" font-weight="800">Per-core bars</text>
+  <text x="715" y="555" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">CPU load, freq,</text>
+  <text x="715" y="576" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">top, and dumpsys.</text>
+
+  <text x="948" y="495" fill="#22c55e" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16" font-weight="700">BILINGUAL DOCS</text>
+  <text x="948" y="530" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24" font-weight="800">Pages + CI</text>
+  <text x="948" y="555" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">English and Japanese</text>
+  <text x="948" y="576" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">release docs and guide.</text>
 </svg>
