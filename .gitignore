@@ -1,5 +1,8 @@
 # Local temp and verification clones
 tmp*/
+!tmp/
+tmp/*
+!tmp/release-qa-*.md
 .tmp_*
 
 # Downloaded archives and build artifacts
