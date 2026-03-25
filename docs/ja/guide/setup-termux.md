@@ -24,6 +24,8 @@ ssh -p 8022 your-termux-user@127.0.0.1
 
 秘密鍵パスや host 設定は、自分の環境に合わせて置き換えてください。
 
+同じ host-to-device bootstrap 経路を再現したい場合、この lab の初期セットアップには再利用可能な [android-termux-ssh-bootstrap](https://github.com/Sunwood-ai-labs/android-termux-ssh-bootstrap-skill) skill を使っています。Windows 側からの ADB 準備、GitHub 版 Termux、OpenSSH、公開鍵認証、`adb forward` を使った SSH 検証までを含む流れです。
+
 ## 2. パッケージを入れる
 
 Vulkan 有効 build に必要な package を導入します。

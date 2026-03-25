@@ -12,6 +12,8 @@
 
 このリポジトリの主張は意図的に限定しています。2026 年 3 月 23 日に確認できた 1 台の実機パスと、2026 年 3 月 25 日の追跡確認だけを公開しており、QVAC や Hugging Face の公式配布物でも、広い Android 互換性を示すものでもありません。
 
+この lab の Windows から Termux へ入る初期セットアップには、再利用可能な [android-termux-ssh-bootstrap](https://github.com/Sunwood-ai-labs/android-termux-ssh-bootstrap-skill) skill を使いました。GitHub 版 Termux、OpenSSH、公開鍵認証、`adb forward` を使った SSH 検証までを含む bootstrap 手順です。
+
 ## 検証済みスナップショット
 
 | 項目 | 状態 | 補足 |

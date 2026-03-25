@@ -12,6 +12,8 @@ Public lab notes, patches, evidence, and monitoring helpers for trying QVAC Fabr
 
 This repository is intentionally narrow. It documents one real-device path that worked on March 23, 2026, plus follow-up spot checks from March 25, 2026. It is not an official QVAC or Hugging Face release, and it does not claim broad Android compatibility.
 
+The Windows-to-Termux bootstrap used in this lab was set up with the reusable [android-termux-ssh-bootstrap](https://github.com/Sunwood-ai-labs/android-termux-ssh-bootstrap-skill) skill. That setup flow covers ADB preparation, the GitHub Termux build, OpenSSH installation, public-key authentication, and `adb forward` SSH validation from Windows.
+
 ## Verified Snapshot
 
 | Area | Status | Notes |
