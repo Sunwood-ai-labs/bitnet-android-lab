@@ -65,6 +65,8 @@ Both paths are observation aids, not benchmark instrumentation. They can affect 
 - Guide: [`docs/guide/setup-termux.md`](./docs/guide/setup-termux.md)
 - Results: [`docs/results/experiment-log.md`](./docs/results/experiment-log.md), [`docs/results/findings.md`](./docs/results/findings.md)
 - Reference: [`docs/reference/limitations.md`](./docs/reference/limitations.md), [`docs/reference/evidence.md`](./docs/reference/evidence.md)
+- Latest release notes: [`docs/reference/releases/v0.1.0.md`](./docs/reference/releases/v0.1.0.md)
+- Latest walkthrough article: [`docs/guide/articles/v0-1-0-release.md`](./docs/guide/articles/v0-1-0-release.md)
 
 ## Sources
 

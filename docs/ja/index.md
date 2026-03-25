@@ -59,3 +59,8 @@ features:
 - Windows 側の `adb` watcher。メモリ / スワップのバー、各コア使用率バー、周波数、`dumpsys` 要約を表示
 
 どちらも観察用途であり、ベンチマーク用の計測器ではありません。
+
+## 最新リリース
+
+- [v0.1.0 リリースノート](./reference/releases/v0.1.0.md)
+- [v0.1.0 解説記事](./guide/articles/v0-1-0-release.md)

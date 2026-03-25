@@ -65,6 +65,8 @@
 - Guide: [`docs/guide/setup-termux.md`](./docs/guide/setup-termux.md)
 - Results: [`docs/results/experiment-log.md`](./docs/results/experiment-log.md), [`docs/results/findings.md`](./docs/results/findings.md)
 - Reference: [`docs/reference/limitations.md`](./docs/reference/limitations.md), [`docs/reference/evidence.md`](./docs/reference/evidence.md)
+- 最新リリースノート: [`docs/reference/releases/v0.1.0.md`](./docs/reference/releases/v0.1.0.md)
+- 最新の解説記事: [`docs/guide/articles/v0-1-0-release.md`](./docs/guide/articles/v0-1-0-release.md)
 
 ## 参照元
 

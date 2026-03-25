@@ -59,3 +59,8 @@ The repository includes both Termux-side and Windows-side observation helpers:
 - a Windows `adb` watcher with memory and swap bars, per-core CPU usage bars, frequency lines, and `dumpsys` summaries
 
 These tools are useful for live inspection but should not be treated as benchmark instrumentation.
+
+## Latest Release
+
+- [v0.1.0 release notes](./reference/releases/v0.1.0.md)
+- [v0.1.0 walkthrough article](./guide/articles/v0-1-0-release.md)
