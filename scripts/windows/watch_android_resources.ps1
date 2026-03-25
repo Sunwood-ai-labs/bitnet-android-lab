@@ -139,20 +139,56 @@ function Select-FirstNonEmptyLine {
     return ""
 }
 
-function Format-FrequencyLines {
+function New-UsageBar {
+    param(
+        [double]$Percent,
+        [int]$Width = 12
+    )
+
+    $Percent = [Math]::Max(0, [Math]::Min(100, $Percent))
+    $filled = [int][Math]::Round(($Percent / 100) * $Width)
+    $filled = [Math]::Max(0, [Math]::Min($Width, $filled))
+    return ("[{0}{1}]" -f ("#" * $filled), ("." * ($Width - $filled)))
+}
+
+function Convert-KiBToHuman {
+    param([double]$KiB)
+
+    $units = @("KiB", "MiB", "GiB", "TiB")
+    $value = $KiB
+    $unitIndex = 0
+
+    while ($value -ge 1024 -and $unitIndex -lt ($units.Count - 1)) {
+        $value /= 1024
+        $unitIndex++
+    }
+
+    return ("{0:N1}{1}" -f $value, $units[$unitIndex])
+}
+
+function Get-FrequencyMap {
     param([string[]]$Lines)
 
-    $formatted = New-Object System.Collections.Generic.List[string]
+    $map = @{}
     foreach ($line in $Lines) {
         if ($line -match "^(cpu\d+)=(\d+)$") {
-            $cpu = $matches[1]
-            $ghz = [double]$matches[2] / 1000000
-            $formatted.Add(("{0}={1:N2}GHz" -f $cpu, $ghz))
+            $map[$matches[1]] = [double]$matches[2] / 1000000
         }
     }
 
-    if ($formatted.Count -eq 0) {
+    return $map
+}
+
+function Format-FrequencyLines {
+    param([hashtable]$FrequencyMap)
+
+    if ($FrequencyMap.Count -eq 0) {
         return @("unavailable")
+    }
+
+    $formatted = New-Object System.Collections.Generic.List[string]
+    foreach ($cpu in ($FrequencyMap.Keys | Sort-Object { [int]($_ -replace '\D', '') })) {
+        $formatted.Add(("{0}={1:N2}GHz" -f $cpu, $FrequencyMap[$cpu]))
     }
 
     $grouped = New-Object System.Collections.Generic.List[string]
@@ -160,15 +196,45 @@ function Format-FrequencyLines {
         $end = [Math]::Min($i + 3, $formatted.Count - 1)
         $grouped.Add(($formatted[$i..$end] -join "  "))
     }
+
     return $grouped.ToArray()
 }
 
-function Get-CpuUsageLines {
+function Get-MemoryBarLines {
+    param([string[]]$TopLines)
+
+    $bars = New-Object System.Collections.Generic.List[string]
+
+    foreach ($line in $TopLines) {
+        if ($line -match "^\s*Mem:\s+(\d+)K total,\s+(\d+)K used,\s+(\d+)K free") {
+            $total = [double]$matches[1]
+            $used = [double]$matches[2]
+            $percent = if ($total -gt 0) { ($used / $total) * 100 } else { 0 }
+            $bars.Add(("Mem  {0} {1,5:N1}% used ({2}/{3})" -f (New-UsageBar -Percent $percent -Width 24), $percent, (Convert-KiBToHuman -KiB $used), (Convert-KiBToHuman -KiB $total)))
+            continue
+        }
+
+        if ($line -match "^\s*Swap:\s+(\d+)K total,\s+(\d+)K used,\s+(\d+)K free") {
+            $total = [double]$matches[1]
+            $used = [double]$matches[2]
+            $percent = if ($total -gt 0) { ($used / $total) * 100 } else { 0 }
+            $bars.Add(("Swap {0} {1,5:N1}% used ({2}/{3})" -f (New-UsageBar -Percent $percent -Width 24), $percent, (Convert-KiBToHuman -KiB $used), (Convert-KiBToHuman -KiB $total)))
+        }
+    }
+
+    if ($bars.Count -eq 0) {
+        return @("Memory bars unavailable")
+    }
+
+    return $bars.ToArray()
+}
+
+function Get-CpuUsageEntries {
     param([string[]]$Lines)
 
     $splitIndex = [Array]::IndexOf($Lines, "__CPU_SAMPLE_SPLIT__")
     if ($splitIndex -lt 1 -or $splitIndex -ge ($Lines.Count - 1)) {
-        return @("unavailable")
+        return @()
     }
 
     $first = $Lines[0..($splitIndex - 1)]
@@ -190,7 +256,7 @@ function Get-CpuUsageLines {
         }
     }
 
-    $formatted = New-Object System.Collections.Generic.List[string]
+    $entries = New-Object System.Collections.Generic.List[object]
     foreach ($line in $second) {
         if ($line -notmatch "^(cpu\d+)\s+(.+)$") {
             continue
@@ -217,17 +283,39 @@ function Get-CpuUsageLines {
             $usage = (($totalDelta - $idleDelta) / $totalDelta) * 100
         }
 
-        $formatted.Add(("{0}={1,5:N1}%" -f $cpu, $usage))
+        $entries.Add([pscustomobject]@{
+            Cpu   = $cpu
+            Usage = $usage
+        })
     }
 
-    if ($formatted.Count -eq 0) {
+    return $entries.ToArray()
+}
+
+function Format-CpuBarLines {
+    param(
+        [object[]]$Entries,
+        [hashtable]$FrequencyMap
+    )
+
+    if (-not $Entries -or $Entries.Count -eq 0) {
         return @("unavailable")
     }
 
+    $segments = New-Object System.Collections.Generic.List[string]
+    foreach ($entry in ($Entries | Sort-Object { [int]($_.Cpu -replace '\D', '') })) {
+        $freqText = if ($FrequencyMap.ContainsKey($entry.Cpu)) {
+            "@{0:N2}G" -f $FrequencyMap[$entry.Cpu]
+        } else {
+            "@--"
+        }
+        $segments.Add(("{0} {1} {2,5:N1}% {3}" -f $entry.Cpu.ToUpper().PadRight(4), (New-UsageBar -Percent $entry.Usage), $entry.Usage, $freqText))
+    }
+
     $grouped = New-Object System.Collections.Generic.List[string]
-    for ($i = 0; $i -lt $formatted.Count; $i += 4) {
-        $end = [Math]::Min($i + 3, $formatted.Count - 1)
-        $grouped.Add(($formatted[$i..$end] -join "  "))
+    for ($i = 0; $i -lt $segments.Count; $i += 2) {
+        $end = [Math]::Min($i + 1, $segments.Count - 1)
+        $grouped.Add(($segments[$i..$end] -join "    "))
     }
     return $grouped.ToArray()
 }
@@ -240,7 +328,7 @@ function Get-DeviceValue {
 function Get-Snapshot {
     $sampleSeconds = ("{0:0.000}" -f ($CpuSampleMs / 1000.0)).Replace(",", ".")
     $online = Select-FirstNonEmptyLine -Lines (Invoke-AdbShell -ScriptText "cat /sys/devices/system/cpu/online 2>/dev/null || echo unavailable")
-    $freqLines = Format-FrequencyLines -Lines (Invoke-AdbShell -ScriptText @'
+    $frequencyMap = Get-FrequencyMap -Lines (Invoke-AdbShell -ScriptText @'
 for f in /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq; do
   [ -f "$f" ] || continue
   cpu=$(basename "$(dirname "$(dirname "$f")")")
@@ -248,7 +336,7 @@ for f in /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq; do
   echo "$cpu=$value"
 done
 '@)
-    $cpuUsageLines = Get-CpuUsageLines -Lines (Invoke-AdbShell -ScriptText @"
+    $cpuUsageEntries = Get-CpuUsageEntries -Lines (Invoke-AdbShell -ScriptText @"
 grep '^cpu[0-9]' /proc/stat
 sleep $sampleSeconds
 echo __CPU_SAMPLE_SPLIT__
@@ -256,14 +344,18 @@ grep '^cpu[0-9]' /proc/stat
 "@)
 
     $topLines = Remove-AnsiEscape -Lines (Invoke-AdbShell -ScriptText ("TERM=dumb top -n 1 -m {0}" -f $TopRows))
+    $memoryBars = Get-MemoryBarLines -TopLines $topLines
+    $cpuBarLines = Format-CpuBarLines -Entries $cpuUsageEntries -FrequencyMap $frequencyMap
+    $freqLines = Format-FrequencyLines -FrequencyMap $frequencyMap
     $cpuInfoLines = Remove-KnownNoise -Lines (Remove-AnsiEscape -Lines (Invoke-AdbShell -ScriptText ("dumpsys cpuinfo | head -n {0}" -f $CpuInfoRows)))
     $memInfoLines = Remove-KnownNoise -Lines (Remove-AnsiEscape -Lines (Invoke-AdbShell -ScriptText ("dumpsys meminfo | head -n {0}" -f $MemInfoRows)))
 
     return [pscustomobject]@{
         CapturedAt   = Get-Date
         Online       = $online
+        MemoryBars   = $memoryBars
+        CpuBars      = $cpuBarLines
         Frequencies  = $freqLines
-        CpuUsage     = $cpuUsageLines
         TopLines     = $topLines
         CpuInfoLines = @($cpuInfoLines)
         MemInfoLines = @($memInfoLines)
@@ -309,14 +401,15 @@ do {
     }
     Write-Host ("adb: {0}" -f $script:AdbExe)
     Write-Host ("Refresh: {0}s  top rows: {1}" -f $RefreshSeconds, $TopRows)
+    Write-Host ("CPU sample: {0}ms" -f $CpuSampleMs)
     Write-Host ("CPU online: {0}" -f $snapshot.Online)
-    foreach ($line in $snapshot.CpuUsage) {
-        Write-Host ("CPU use:  {0}" -f $line)
-    }
-    foreach ($line in $snapshot.Frequencies) {
-        Write-Host ("CPU freq: {0}" -f $line)
+    foreach ($line in $snapshot.MemoryBars) {
+        Write-Host $line
     }
     Write-Host ""
+
+    Write-Section -Title "CPU Bars" -Lines $snapshot.CpuBars
+    Write-Section -Title "CPU Freq" -Lines $snapshot.Frequencies
 
     Write-Section -Title "top" -Lines $snapshot.TopLines
     Write-Section -Title "dumpsys cpuinfo" -Lines $snapshot.CpuInfoLines
