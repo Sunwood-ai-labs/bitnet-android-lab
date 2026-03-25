@@ -39,8 +39,14 @@ Confirmed again from the connected device on March 25, 2026:
 | SoC vendor / model | Mediatek `MT6769` |
 | Board platform | `mt6768` |
 | CPU ABI | `arm64-v8a` |
+| CPU cores | `8` total |
+| CPU cluster layout | `6` cores on `policy0` + `2` cores on `policy6` |
+| CPU max frequencies | `1.70 GHz` (cores `0-5`), `2.00 GHz` (cores `6-7`) |
+| CPU microarchitecture guess | likely `6x Cortex-A55` + `2x Cortex-A75` from ARM part IDs `0xd05` / `0xd0a` |
 | GPU | `Mali-G52 MC2` |
 | Vulkan instance | `1.3.346` |
+| GPU Vulkan API | `1.3.278` |
+| GPU driver | ARM proprietary `v1.r49p1-03bet0.19498e0ae1d5dac223383c39a2e58f04` |
 | Screen size | `720x1640` |
 | Screen density | `320 dpi` |
 | RAM seen by `/proc/meminfo` | `7849100 kB` |
@@ -55,6 +61,7 @@ Confirmed again from the connected device on March 25, 2026:
 - The fast inference result proves text generation happened on-device. It does not prove answer quality or benchmark-level correctness.
 - Shutdown still emitted `FORTIFY: pthread_mutex_lock called on a destroyed mutex`, so repeated-run and long-run stability remain unverified.
 - The tiny training smoke run still has one unresolved inconsistency: the input file was a 2-line subset, while runtime logs reported `datapoints=5`.
+- The CPU microarchitecture row is an inference from ARM CPU part IDs exposed by `/proc/cpuinfo`, not a direct vendor marketing string.
 
 ## Repository Layout
 

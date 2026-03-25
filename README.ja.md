@@ -39,8 +39,14 @@ Android 実機上の Termux と `adb forward` SSH を使って、QVAC Fabric Bit
 | SoC vendor / model | Mediatek `MT6769` |
 | board platform | `mt6768` |
 | CPU ABI | `arm64-v8a` |
+| CPU コア数 | `8` |
+| CPU クラスタ構成 | `6` cores on `policy0` + `2` cores on `policy6` |
+| CPU 最大周波数 | `1.70 GHz` (`0-5`), `2.00 GHz` (`6-7`) |
+| CPU マイクロアーキテクチャ推定 | ARM part ID `0xd05` / `0xd0a` から、たぶん `6x Cortex-A55` + `2x Cortex-A75` |
 | GPU | `Mali-G52 MC2` |
 | Vulkan instance | `1.3.346` |
+| GPU Vulkan API | `1.3.278` |
+| GPU driver | ARM proprietary `v1.r49p1-03bet0.19498e0ae1d5dac223383c39a2e58f04` |
 | 画面解像度 | `720x1640` |
 | 画面 density | `320 dpi` |
 | `/proc/meminfo` 上の RAM | `7849100 kB` |
@@ -55,6 +61,7 @@ Android 実機上の Termux と `adb forward` SSH を使って、QVAC Fabric Bit
 - fast inference の成功は「端末上でテキスト生成が返った」ことの確認であり、品質評価や正答率の保証ではありません。
 - 終了時に `FORTIFY: pthread_mutex_lock called on a destroyed mutex` が残るため、長時間運転や反復実行の安定性は未確認です。
 - tiny 学習では、入力 JSONL は 2 lines なのに runtime log は `datapoints=5` と出ており、ここは未解決です。
+- CPU マイクロアーキテクチャ欄は `/proc/cpuinfo` の ARM part ID からの推定で、メーカーの公式マーケティング表記そのものではありません。
 
 ## 構成
 

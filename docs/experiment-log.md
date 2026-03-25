@@ -24,10 +24,13 @@ Date of the recorded lab session: March 23, 2026.
   - device codename: `pond`
   - SoC: Mediatek `MT6769` / board `mt6768`
   - CPU ABI: `arm64-v8a`
+  - CPU clusters: `6` cores at up to `1.70 GHz` + `2` cores at up to `2.00 GHz`
+  - likely CPU core types from ARM part IDs: `6x Cortex-A55` + `2x Cortex-A75`
   - screen: `720x1640` at `320 dpi`
   - RAM from `/proc/meminfo`: `7849100 kB`
   - `/data` at check time: `223G total / 74G used / 149G avail`
 - GPU seen by Vulkan: `Mali-G52 MC2`
+- GPU Vulkan API / driver: `1.3.278` / `v1.r49p1-03bet0.19498e0ae1d5dac223383c39a2e58f04`
 - Successful fast inference settings: `-c 128 -b 8 -ub 8 --no-warmup -n 8`
 - Checkpoint artifact used for fast inference: `checkpoint_step_00000006/model.gguf`
 
