@@ -66,7 +66,8 @@ Confirmed again from the connected device on March 25, 2026:
 
 ## Repository Layout
 
-- [`scripts/termux/`](./scripts/termux/) - Termux-side helper scripts
+- [`scripts/termux/`](./scripts/termux/) - Termux-side helper scripts, including an optional monitoring tool installer
+- [`scripts/windows/`](./scripts/windows/) - Windows host-side helper scripts, including an `adb` resource watcher
 - [`patches/qvac-fabric-llm.cpp/`](./patches/qvac-fabric-llm.cpp/) - Minimal diffs extracted from the local Termux workarounds
 - [`prompts/`](./prompts/) - Prompt files used by the inference helpers
 - [`evidence/`](./evidence/) - Captured log snippets and claim-to-evidence mapping
@@ -80,6 +81,8 @@ Confirmed again from the connected device on March 25, 2026:
 3. Place models, adapters, and datasets under `QVAC_ROOT` on the device. This repo does not ship model weights or datasets.
 4. Use the scripts in [`scripts/termux/`](./scripts/termux/) with `QVAC_ROOT`, `UPSTREAM_DIR`, and prompt paths adjusted for your environment.
 5. Compare your output against the evidence files in [`evidence/logs/`](./evidence/logs/).
+6. Optionally install SSH monitoring tools with `bash ./scripts/termux/install_monitoring_tools.sh` if you want a live TUI dashboard during runs.
+7. Optionally watch Android-side CPU and memory state from Windows with `powershell -File .\scripts\windows\watch_android_resources.ps1` for observation only; the live view can include package and process names.
 
 ## Evidence
 

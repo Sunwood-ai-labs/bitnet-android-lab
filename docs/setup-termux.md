@@ -76,3 +76,44 @@ This repo intentionally does not bundle those assets.
 ## 7. Run The Helper Scripts
 
 The scripts in [`scripts/termux/`](../scripts/termux/) default to `QVAC_ROOT="$HOME/qvac-bitnet"` and can be overridden with environment variables.
+
+## 8. Optional: Install SSH Monitoring Tools
+
+If you want a live usage dashboard while connected over SSH, install the optional TUI tools:
+
+```bash
+bash ./scripts/termux/install_monitoring_tools.sh
+```
+
+This installs:
+
+- `gotop` for an all-in-one CPU / memory / process / disk / network dashboard
+- `htop` as a lower-friction process viewer fallback
+- `bmon` for network-only bandwidth monitoring
+
+Use them directly from the Termux SSH session:
+
+```bash
+gotop
+htop
+bmon
+```
+
+These tools are for interactive observation only. They can change timing, CPU load, or thermals during inference and fine-tuning, and they do not expose GPU counters or Android thermal telemetry.
+
+## 9. Optional: Watch Android Resources From Windows
+
+If you want a host-side view that does not depend on Termux `/proc` access, use the Windows watcher:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\watch_android_resources.ps1
+```
+
+This watcher uses `adb shell` to show:
+
+- `top` process rows
+- `dumpsys cpuinfo` summary
+- `dumpsys meminfo` summary
+- per-core CPU frequency lines
+
+This is an observation helper, not benchmark instrumentation. The live output can include package and process names from the connected device.
