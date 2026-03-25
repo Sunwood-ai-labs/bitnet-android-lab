@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">bitnet-android-lab release header v0.1.0</title>
-  <desc id="desc">Release banner for bitnet-android-lab v0.1.0 with a phone motif, version badge, and short release highlights.</desc>
+  <desc id="desc">Release banner for bitnet-android-lab v0.1.0 with a phone motif, version badge, and minimal highlight cards.</desc>
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#07111d"/>
@@ -54,12 +54,11 @@
   <rect x="458" y="74" width="662" height="74" rx="22" fill="#0b1220" stroke="#1e293b" stroke-width="3"/>
   <rect x="484" y="96" width="188" height="30" rx="15" fill="#111827"/>
   <rect x="484" y="96" width="126" height="30" rx="15" fill="url(#accent)"/>
-  <text x="697" y="117" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18" font-weight="700">INITIAL PUBLIC RELEASE</text>
+  <text x="697" y="117" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="18" font-weight="700">PUBLIC RELEASE</text>
 
   <text x="458" y="236" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="50" font-weight="700">bitnet-android-lab</text>
   <text x="458" y="318" fill="#38bdf8" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="88" font-weight="800">v0.1.0</text>
-  <text x="458" y="372" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="26" font-weight="600">Android Termux BitNet lab</text>
-  <text x="458" y="410" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24">Patches, evidence, bilingual docs, and an ADB watcher.</text>
+  <text x="458" y="382" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="28" font-weight="600">Android Termux BitNet lab</text>
 
   <g filter="url(#shadow)">
     <rect x="458" y="454" width="196" height="110" rx="24" fill="url(#teal)" opacity="0.96"/>
@@ -67,18 +66,15 @@
     <rect x="924" y="454" width="196" height="110" rx="24" fill="#111827"/>
   </g>
 
-  <text x="482" y="495" fill="#e6fffb" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16" font-weight="700">EVIDENCE + PATCHES</text>
-  <text x="482" y="530" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24" font-weight="800">Real-device lab</text>
-  <text x="482" y="555" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">Scripts, logs, and</text>
-  <text x="482" y="576" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">minimal Android fixes.</text>
+  <text x="482" y="495" fill="#e6fffb" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="15" font-weight="700">LAB</text>
+  <text x="482" y="532" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="30" font-weight="800">Evidence</text>
+  <text x="482" y="560" fill="#dbeafe" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">Patches + logs</text>
 
-  <text x="715" y="495" fill="#7dd3fc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16" font-weight="700">ADB WATCHER</text>
-  <text x="715" y="530" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24" font-weight="800">Per-core bars</text>
-  <text x="715" y="555" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">CPU load, freq,</text>
-  <text x="715" y="576" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">top, and dumpsys.</text>
+  <text x="715" y="495" fill="#7dd3fc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="15" font-weight="700">WATCHER</text>
+  <text x="715" y="532" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="30" font-weight="800">Per-core</text>
+  <text x="715" y="560" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">ADB + dumpsys</text>
 
-  <text x="948" y="495" fill="#22c55e" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16" font-weight="700">BILINGUAL DOCS</text>
-  <text x="948" y="530" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="24" font-weight="800">Pages + CI</text>
-  <text x="948" y="555" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">English and Japanese</text>
-  <text x="948" y="576" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">release docs and guide.</text>
+  <text x="948" y="495" fill="#22c55e" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="15" font-weight="700">DOCS</text>
+  <text x="948" y="532" fill="#f8fafc" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="30" font-weight="800">EN + JA</text>
+  <text x="948" y="560" fill="#cbd5e1" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-size="16">Pages + CI</text>
 </svg>
