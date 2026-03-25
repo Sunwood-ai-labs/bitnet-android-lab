@@ -8,6 +8,7 @@
 - requested outputs: `GitHub release body, docs-backed release notes, companion walkthrough article`
 - validation commands run: `powershell -ExecutionPolicy Bypass -File D:\Prj\gh-release-notes-skill\scripts\verify-svg-assets.ps1 -RepoPath . -Path docs/public/bitnet-android-lab-hero.svg,docs/public/bitnet-android-lab-mark.svg,docs/public/releases/release-header-v0.1.0.svg`, `npm run docs:build --prefix docs`, `Get-ChildItem scripts\termux -Filter *.sh | ForEach-Object { bash -lc "bash -n 'scripts/termux/$($_.Name)'" }`, `PowerShell parser validation for *.ps1`, `gh run view 23540861555 --repo Sunwood-ai-labs/bitnet-android-lab`, `gh run view 23540861535 --repo Sunwood-ai-labs/bitnet-android-lab`, `gh release view v0.1.0 --repo Sunwood-ai-labs/bitnet-android-lab --json url,name,body,publishedAt,isDraft,isPrerelease,tagName,targetCommitish`
 - release URLs: `https://github.com/Sunwood-ai-labs/bitnet-android-lab/releases/tag/v0.1.0`, `https://sunwood-ai-labs.github.io/bitnet-android-lab/reference/releases/v0.1.0`, `https://sunwood-ai-labs.github.io/bitnet-android-lab/guide/articles/v0-1-0-release`, `https://sunwood-ai-labs.github.io/bitnet-android-lab/ja/reference/releases/v0.1.0`, `https://sunwood-ai-labs.github.io/bitnet-android-lab/ja/guide/articles/v0-1-0-release`
+- post-release corrections: `refreshed docs/public/releases/release-header-v0.1.0.svg to remove text-overflow risk in narrow renderers and rewrote the GitHub release body in English after Pages published the updated asset`
 
 ## Claim Matrix
 
@@ -45,7 +46,7 @@
 | docs_assets_committed_before_tag | pass | Release collateral was committed in `79ca184` and pushed to `main` before creating and pushing tag `v0.1.0` |
 | docs_deployed_live | pass | `gh run view 23540861535 --repo Sunwood-ai-labs/bitnet-android-lab` succeeded, and the four docs URLs plus the release header asset returned HTTP `200` |
 | tag_local_remote | pass | Local `git tag -l v0.1.0` returns the tag, and `git push origin v0.1.0` created the remote tag |
-| github_release_verified | pass | `gh release view v0.1.0 --repo Sunwood-ai-labs/bitnet-android-lab --json url,name,body,publishedAt,isDraft,isPrerelease,tagName,targetCommitish` confirmed the final body and release URL |
+| github_release_verified | pass | `gh release edit v0.1.0 --repo Sunwood-ai-labs/bitnet-android-lab --notes-file <temp english notes>` plus `gh release view v0.1.0 --repo Sunwood-ai-labs/bitnet-android-lab --json url,name,body,publishedAt,isDraft,isPrerelease,tagName,targetCommitish` confirmed the English body, docs badge links, and release URL |
 | validation_commands_recorded | pass | Validation commands are listed in Release Context and were executed during this release task |
 | publish_date_verified | pass | `gh release view v0.1.0 --repo Sunwood-ai-labs/bitnet-android-lab --json publishedAt` reported `2026-03-25T12:27:09Z` |
 
@@ -53,4 +54,5 @@
 
 - blockers:
 - waivers:
+- post-release verification on 2026-03-25: live asset URL for `release-header-v0.1.0.svg` returned HTTP `200` after the refresh commit, and the GitHub release body was re-read after `gh release edit` to confirm the English rewrite
 - follow-up docs tasks: consider adding dedicated docs navigation entries for release notes and article archives once there is a second tagged release
