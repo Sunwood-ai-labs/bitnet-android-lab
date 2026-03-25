@@ -6,7 +6,7 @@ hero:
   text: "実機 Android 上で試した QVAC BitNet LoRA"
   tagline: "Termux + Vulkan 実験のための公開 lab note、patch、evidence、監視ヘルパーをまとめた docs です。"
   image:
-    src: /bitnet-android-lab/bitnet-android-lab-hero.svg
+    src: /bitnet-android-lab-hero.svg
     alt: bitnet-android-lab hero
   actions:
     - theme: brand

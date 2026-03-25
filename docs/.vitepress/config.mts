@@ -10,13 +10,13 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   head: [
-    ["link", { rel: "icon", href: "/bitnet-android-lab/favicon.svg" }],
+    ["link", { rel: "icon", href: "/favicon.svg" }],
     ["meta", { property: "og:title", content: "bitnet-android-lab" }],
     ["meta", { property: "og:description", content: "Android Termux lab notes, patches, evidence, and monitoring helpers for QVAC BitNet LoRA experiments." }],
     ["meta", { property: "og:image", content: `${siteUrl}bitnet-android-lab-hero.svg` }]
   ],
   themeConfig: {
-    logo: "/bitnet-android-lab/bitnet-android-lab-mark.svg",
+    logo: "/bitnet-android-lab-mark.svg",
     search: {
       provider: "local"
     },

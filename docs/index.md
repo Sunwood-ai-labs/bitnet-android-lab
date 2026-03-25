@@ -6,7 +6,7 @@ hero:
   text: "QVAC BitNet LoRA on a real Android phone"
   tagline: "Public lab notes, patches, evidence, and monitoring helpers for a real Termux + Vulkan experiment."
   image:
-    src: /bitnet-android-lab/bitnet-android-lab-hero.svg
+    src: /bitnet-android-lab-hero.svg
     alt: bitnet-android-lab hero
   actions:
     - theme: brand
