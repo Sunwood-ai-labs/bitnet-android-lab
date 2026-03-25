@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install docs dependencies
+        run: npm ci --prefix docs
+
+      - name: Build docs
+        run: npm run docs:build --prefix docs
+
+      - name: Validate shell scripts
+        run: |
+          find scripts -name '*.sh' -print0 | xargs -0 -n1 bash -n
+
+      - name: Validate PowerShell scripts
+        shell: pwsh
+        run: |
+          $parseErrors = @()
+          Get-ChildItem -Recurse -Filter *.ps1 | ForEach-Object {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$errors)
+            if ($errors) {
+              $errors | ForEach-Object {
+                Write-Error "$($_.Extent.File):$($_.Extent.StartLineNumber) $($_.Message)"
+              }
+              $parseErrors += $errors
+            }
+          }
+          if ($parseErrors.Count -gt 0) {
+            exit 1
+          }

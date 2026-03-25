@@ -16,6 +16,11 @@ tmp*/
 /checkpoints*/
 /b7336/
 
+# Docs tooling
+/docs/node_modules/
+/docs/.vitepress/cache/
+/docs/.vitepress/dist/
+
 # OS/editor noise
 Thumbs.db
 .DS_Store

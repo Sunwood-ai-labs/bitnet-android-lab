@@ -2,93 +2,70 @@
 
 [English README](./README.md)
 
-Android 実機上の Termux と `adb forward` SSH を使って、QVAC Fabric BitNet の LoRA 微調整と推論を試したときの、公開向け lab note です。
+[![CI](https://github.com/Sunwood-ai-labs/bitnet-android-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Sunwood-ai-labs/bitnet-android-lab/actions/workflows/ci.yml)
+[![Docs](https://github.com/Sunwood-ai-labs/bitnet-android-lab/actions/workflows/pages.yml/badge.svg)](https://github.com/Sunwood-ai-labs/bitnet-android-lab/actions/workflows/pages.yml)
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-0f172a?logo=github)](https://sunwood-ai-labs.github.io/bitnet-android-lab/)
 
-## このリポジトリにあるもの
+![bitnet-android-lab hero](./docs/public/bitnet-android-lab-hero.svg)
 
-- 2026年3月23日の実機検証を整理した公開版メモ
-- 1台の Xiaomi / Android 15 / Mali-G52 MC2 端末で動いた patched local `qvac-fabric-llm.cpp` source build の断片
-- Termux 側 helper script
-- ローカル workaround から切り出した最小 patch
-- 実行証跡として公開できる形に整えた evidence snippet
+実機 Android 端末で、Termux・`adb forward`・SSH・Vulkan を使って QVAC Fabric BitNet の LoRA 微調整を試した記録、パッチ、evidence、監視ヘルパーをまとめた公開 lab リポジトリです。
 
-これは公式配布物ではなく、再現と検証のための公開 lab note です。
+このリポジトリの主張は意図的に限定しています。2026 年 3 月 23 日に確認できた 1 台の実機パスと、2026 年 3 月 25 日の追跡確認だけを公開しており、QVAC や Hugging Face の公式配布物でも、広い Android 互換性を示すものでもありません。
 
-## 確認できた範囲
+## 検証済みスナップショット
 
 | 項目 | 状態 | 補足 |
 | --- | --- | --- |
-| Windows -> `adb forward` -> SSH -> Termux 接続 | 確認済み | 公開版では鍵パスや端末シリアルは除去済み |
-| 公式 `llama-b7336-bin-android.zip` をそのまま Termux CLI bundle として使う経路 | 未確認 | この検証では Android app build artifact に見えた |
-| patched local source build on Termux | 確認済み | upstream commit `a218e05479cc019dfa592a7fae2d6d82065012cc` 基準 |
-| TQ1 base + 公開 biomedical adapter 推論 | 確認済み | 実機 smoke run |
-| TQ2 tiny LoRA checkpoint progression | 確認済み | あくまで smoke test |
-| TQ2 checkpoint ベース fast inference | 確認済み | 短縮設定で 1 件の非空応答を確認 |
+| Windows -> `adb forward` -> SSH -> Termux 接続 | Verified | 公開物から秘密鍵パスと端末シリアルは除外 |
+| Termux 上の patched local `qvac-fabric-llm.cpp` build | Verified | upstream commit `a218e05479cc019dfa592a7fae2d6d82065012cc` を使用 |
+| TQ1 ベースモデル + 公開 biomedical adapter 推論 | Verified | 単発 rerun と throughput 参照値を記録 |
+| TQ2 tiny LoRA checkpoint progression | Verified | checkpoint step 6 まで到達 |
+| TQ2 checkpoint-based fast inference | Verified | 短い非空 completion を確認 |
+| 公式 `llama-b7336-bin-android.zip` をそのまま Termux CLI bundle として使う経路 | Not verified | この lab では turnkey な CLI bundle ではなく Android app build artifact に見えた |
 
-## 実機スペック
+## クイックスタート
 
-2026年3月25日に接続中の実機から再確認した値:
+1. [`docs/guide/setup-termux.md`](./docs/guide/setup-termux.md) か公開 docs <https://sunwood-ai-labs.github.io/bitnet-android-lab/> を読みます。
+2. [`patches/qvac-fabric-llm.cpp/`](./patches/qvac-fabric-llm.cpp/) の patch を upstream commit `a218e05479cc019dfa592a7fae2d6d82065012cc` に適用します。
+3. モデル、adapter、dataset を端末側の `QVAC_ROOT` 配下に配置します。この repo 自体には weights や dataset は含みません。
+4. [`scripts/termux/`](./scripts/termux/) の helper script を、自分の環境変数とパスに合わせて実行します。
+5. [`evidence/manifest.md`](./evidence/manifest.md) と [`evidence/logs/`](./evidence/logs/) を見て、出力を照合します。
 
-| 項目 | 値 |
-| --- | --- |
-| ブランド / 型番 | Xiaomi `2409BRN2CL` |
-| 市販名 | `Redmi 14C` |
-| device codename | `pond` |
-| Android | `15` |
-| Android SDK | `35` |
-| SoC vendor / model | Mediatek `MT6769` |
-| board platform | `mt6768` |
-| CPU ABI | `arm64-v8a` |
-| CPU コア数 | `8` |
-| CPU クラスタ構成 | `6` cores on `policy0` + `2` cores on `policy6` |
-| CPU 最大周波数 | `1.70 GHz` (`0-5`), `2.00 GHz` (`6-7`) |
-| CPU マイクロアーキテクチャ推定 | ARM part ID `0xd05` / `0xd0a` から、たぶん `6x Cortex-A55` + `2x Cortex-A75` |
-| GPU | `Mali-G52 MC2` |
-| Vulkan instance | `1.3.346` |
-| GPU Vulkan API | `1.3.278` |
-| GPU driver | ARM proprietary `v1.r49p1-03bet0.19498e0ae1d5dac223383c39a2e58f04` |
-| 画面解像度 | `720x1640` |
-| 画面 density | `320 dpi` |
-| `/proc/meminfo` 上の RAM | `7849100 kB` |
-| 確認時の `/data` 容量 | `223G total / 74G used / 149G avail` |
-| Termux | GitHub `com.termux v0.118.3` |
-| ビルド対象 | Vulkan 有効の `llama-cli` / `llama-finetune-lora` |
+## 監視ヘルパー
 
-## 重要な注意点
+観察用の補助として、2 つの監視経路を用意しています。
 
-- 成功したのは stock の Android 配布物ではなく、ローカル workaround を入れた source build です。
-- TQ2 側の推論成功は、最終 `--output-adapter` ではなく `checkpoint_step_00000006/model.gguf` を使った一時 checkpoint ベースです。
-- fast inference の成功は「端末上でテキスト生成が返った」ことの確認であり、品質評価や正答率の保証ではありません。
-- 終了時に `FORTIFY: pthread_mutex_lock called on a destroyed mutex` が残るため、長時間運転や反復実行の安定性は未確認です。
-- tiny 学習では、入力 JSONL は 2 lines なのに runtime log は `datapoints=5` と出ており、ここは未解決です。
-- CPU マイクロアーキテクチャ欄は `/proc/cpuinfo` の ARM part ID からの推定で、メーカーの公式マーケティング表記そのものではありません。
+- Termux 側 TUI ツール: [`scripts/termux/install_monitoring_tools.sh`](./scripts/termux/install_monitoring_tools.sh) で `gotop`、`htop`、`bmon` を導入
+- Windows 側 `adb` watcher: [`scripts/windows/watch_android_resources.ps1`](./scripts/windows/watch_android_resources.ps1) でメモリ / スワップのバー、各コア使用率バー、各コア周波数、`top`、`dumpsys cpuinfo`、`dumpsys meminfo` を 1 画面表示
 
-## 構成
+どちらも観察用途であり、ベンチマーク計測用途ではありません。監視そのものがタイミングに影響することがあり、接続先デバイスの package 名や process 名が表示される場合もあります。
 
-- [`scripts/termux/`](./scripts/termux/) - Termux 側 helper script
-- [`patches/qvac-fabric-llm.cpp/`](./patches/qvac-fabric-llm.cpp/) - local workaround から切り出した最小 diff
-- [`prompts/`](./prompts/) - 推論 helper で使う prompt
-- [`evidence/`](./evidence/) - ログ断片と claim 対応表
-- [`docs/`](./docs/) - setup, findings, limitations, experiment log
-- [`THIRD_PARTY.md`](./THIRD_PARTY.md) - upstream provenance
+## リポジトリ構成
 
-## 最短の見方
+- [`docs/`](./docs/) は公開 docs 用の guide / results / reference を収録
+- [`evidence/`](./evidence/) は公開 claim と日付付き log snippet の対応を管理
+- [`patches/qvac-fabric-llm.cpp/`](./patches/qvac-fabric-llm.cpp/) は Termux workaround patch を格納
+- [`scripts/termux/`](./scripts/termux/) は Termux 側 helper
+- [`scripts/windows/`](./scripts/windows/) は Windows 側 helper
+- [`THIRD_PARTY.md`](./THIRD_PARTY.md) は upstream provenance を記録
 
-1. [`docs/setup-termux.md`](./docs/setup-termux.md) で前提レイアウトを確認する
-2. [`patches/qvac-fabric-llm.cpp/`](./patches/qvac-fabric-llm.cpp/) の patch を upstream commit に当てる
-3. `QVAC_ROOT` 配下に model / adapter / dataset を置く
-4. [`scripts/termux/`](./scripts/termux/) の script を実行する
-5. [`evidence/logs/`](./evidence/logs/) のログ断片と見比べる
+## 注意点
 
-## 証跡
+- 成功したのは stock の公式 Android bundle ではなく、local patched source build の経路です。
+- TQ2 の成功例は `checkpoint_step_00000006/model.gguf` という中間 checkpoint artifact を使っており、最終 `--output-adapter` の検証ではありません。
+- 公開している `tok/s` は単発 run の参照値であり、benchmark median や sustained-speed claim ではありません。
+- 終了時には `FORTIFY: pthread_mutex_lock called on a destroyed mutex` が残っており、長時間運用や repeated-run 安定性は未検証です。
+- tiny training smoke run では、2 行の入力 subset に対して runtime が `datapoints=5` を報告する未解決の不一致があります。
 
-- [`evidence/manifest.md`](./evidence/manifest.md)
-- [`evidence/logs/2026-03-23-finetune-tiny-snippet.txt`](./evidence/logs/2026-03-23-finetune-tiny-snippet.txt)
-- [`evidence/logs/2026-03-23-infer-tq2-checkpoint6-fast-snippet.txt`](./evidence/logs/2026-03-23-infer-tq2-checkpoint6-fast-snippet.txt)
+## Docs
 
-## 追加ドキュメント
+- 公開サイト: <https://sunwood-ai-labs.github.io/bitnet-android-lab/>
+- Guide: [`docs/guide/setup-termux.md`](./docs/guide/setup-termux.md)
+- Results: [`docs/results/experiment-log.md`](./docs/results/experiment-log.md), [`docs/results/findings.md`](./docs/results/findings.md)
+- Reference: [`docs/reference/limitations.md`](./docs/reference/limitations.md), [`docs/reference/evidence.md`](./docs/reference/evidence.md)
 
-- [`docs/setup-termux.md`](./docs/setup-termux.md)
-- [`docs/experiment-log.md`](./docs/experiment-log.md)
-- [`docs/findings.md`](./docs/findings.md)
-- [`docs/limitations.md`](./docs/limitations.md)
+## 参照元
+
+- Hugging Face article: [LoRA Fine-Tuning BitNet b1.58 LLMs on Heterogeneous Edge GPUs via QVAC Fabric](https://huggingface.co/blog/qvac/fabric-llm-finetune-bitnet)
+- Upstream code: [tetherto/qvac-fabric-llm.cpp](https://github.com/tetherto/qvac-fabric-llm.cpp)
+- Model collection: [qvac/fabric-llm-finetune-bitnet](https://huggingface.co/qvac/fabric-llm-finetune-bitnet)
