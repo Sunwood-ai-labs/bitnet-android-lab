@@ -6,6 +6,8 @@ param(
     [string]$Serial,
     [ValidateRange(1, 60)]
     [int]$RefreshSeconds = 2,
+    [ValidateRange(200, 5000)]
+    [int]$CpuSampleMs = 750,
     [ValidateRange(5, 50)]
     [int]$TopRows = 12,
     [ValidateRange(5, 40)]
@@ -161,12 +163,82 @@ function Format-FrequencyLines {
     return $grouped.ToArray()
 }
 
+function Get-CpuUsageLines {
+    param([string[]]$Lines)
+
+    $splitIndex = [Array]::IndexOf($Lines, "__CPU_SAMPLE_SPLIT__")
+    if ($splitIndex -lt 1 -or $splitIndex -ge ($Lines.Count - 1)) {
+        return @("unavailable")
+    }
+
+    $first = $Lines[0..($splitIndex - 1)]
+    $second = $Lines[($splitIndex + 1)..($Lines.Count - 1)]
+
+    $firstStats = @{}
+    foreach ($line in $first) {
+        if ($line -notmatch "^(cpu\d+)\s+(.+)$") {
+            continue
+        }
+        $fields = $matches[2] -split "\s+" | Where-Object { $_ -ne "" }
+        if ($fields.Count -lt 5) {
+            continue
+        }
+        $numbers = @($fields | ForEach-Object { [double]$_ })
+        $firstStats[$matches[1]] = @{
+            Total = ($numbers | Measure-Object -Sum).Sum
+            Idle  = $numbers[3] + $numbers[4]
+        }
+    }
+
+    $formatted = New-Object System.Collections.Generic.List[string]
+    foreach ($line in $second) {
+        if ($line -notmatch "^(cpu\d+)\s+(.+)$") {
+            continue
+        }
+        $cpu = $matches[1]
+        if (-not $firstStats.ContainsKey($cpu)) {
+            continue
+        }
+
+        $fields = $matches[2] -split "\s+" | Where-Object { $_ -ne "" }
+        if ($fields.Count -lt 5) {
+            continue
+        }
+
+        $numbers = @($fields | ForEach-Object { [double]$_ })
+        $total = ($numbers | Measure-Object -Sum).Sum
+        $idle = $numbers[3] + $numbers[4]
+        $totalDelta = $total - $firstStats[$cpu].Total
+        $idleDelta = $idle - $firstStats[$cpu].Idle
+
+        if ($totalDelta -le 0) {
+            $usage = 0
+        } else {
+            $usage = (($totalDelta - $idleDelta) / $totalDelta) * 100
+        }
+
+        $formatted.Add(("{0}={1,5:N1}%" -f $cpu, $usage))
+    }
+
+    if ($formatted.Count -eq 0) {
+        return @("unavailable")
+    }
+
+    $grouped = New-Object System.Collections.Generic.List[string]
+    for ($i = 0; $i -lt $formatted.Count; $i += 4) {
+        $end = [Math]::Min($i + 3, $formatted.Count - 1)
+        $grouped.Add(($formatted[$i..$end] -join "  "))
+    }
+    return $grouped.ToArray()
+}
+
 function Get-DeviceValue {
     param([string[]]$Arguments)
     return Select-FirstNonEmptyLine -Lines (Invoke-AdbCommand -Arguments $Arguments)
 }
 
 function Get-Snapshot {
+    $sampleSeconds = ("{0:0.000}" -f ($CpuSampleMs / 1000.0)).Replace(",", ".")
     $online = Select-FirstNonEmptyLine -Lines (Invoke-AdbShell -ScriptText "cat /sys/devices/system/cpu/online 2>/dev/null || echo unavailable")
     $freqLines = Format-FrequencyLines -Lines (Invoke-AdbShell -ScriptText @'
 for f in /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq; do
@@ -176,6 +248,12 @@ for f in /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq; do
   echo "$cpu=$value"
 done
 '@)
+    $cpuUsageLines = Get-CpuUsageLines -Lines (Invoke-AdbShell -ScriptText @"
+grep '^cpu[0-9]' /proc/stat
+sleep $sampleSeconds
+echo __CPU_SAMPLE_SPLIT__
+grep '^cpu[0-9]' /proc/stat
+"@)
 
     $topLines = Remove-AnsiEscape -Lines (Invoke-AdbShell -ScriptText ("TERM=dumb top -n 1 -m {0}" -f $TopRows))
     $cpuInfoLines = Remove-KnownNoise -Lines (Remove-AnsiEscape -Lines (Invoke-AdbShell -ScriptText ("dumpsys cpuinfo | head -n {0}" -f $CpuInfoRows)))
@@ -185,6 +263,7 @@ done
         CapturedAt   = Get-Date
         Online       = $online
         Frequencies  = $freqLines
+        CpuUsage     = $cpuUsageLines
         TopLines     = $topLines
         CpuInfoLines = @($cpuInfoLines)
         MemInfoLines = @($memInfoLines)
@@ -231,6 +310,9 @@ do {
     Write-Host ("adb: {0}" -f $script:AdbExe)
     Write-Host ("Refresh: {0}s  top rows: {1}" -f $RefreshSeconds, $TopRows)
     Write-Host ("CPU online: {0}" -f $snapshot.Online)
+    foreach ($line in $snapshot.CpuUsage) {
+        Write-Host ("CPU use:  {0}" -f $line)
+    }
     foreach ($line in $snapshot.Frequencies) {
         Write-Host ("CPU freq: {0}" -f $line)
     }
