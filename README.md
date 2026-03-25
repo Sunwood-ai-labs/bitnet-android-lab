@@ -27,11 +27,26 @@ This repository is not an official QVAC or Hugging Face release. It is a reprodu
 
 ## Environment Snapshot
 
-- Phone: Xiaomi `2409BRN2CL`
-- OS: Android `15`
-- GPU: `Mali-G52 MC2`
-- Termux package used in the lab: GitHub `com.termux v0.118.3`
-- Build target: Vulkan-enabled `llama-cli` and `llama-finetune-lora`
+Confirmed again from the connected device on March 25, 2026:
+
+| Item | Value |
+| --- | --- |
+| Brand / model | Xiaomi `2409BRN2CL` |
+| Market name | `Redmi 14C` |
+| Device codename | `pond` |
+| Android | `15` |
+| Android SDK | `35` |
+| SoC vendor / model | Mediatek `MT6769` |
+| Board platform | `mt6768` |
+| CPU ABI | `arm64-v8a` |
+| GPU | `Mali-G52 MC2` |
+| Vulkan instance | `1.3.346` |
+| Screen size | `720x1640` |
+| Screen density | `320 dpi` |
+| RAM seen by `/proc/meminfo` | `7849100 kB` |
+| `/data` filesystem seen during the check | `223G total / 74G used / 149G avail` |
+| Termux package used in the lab | GitHub `com.termux v0.118.3` |
+| Build target | Vulkan-enabled `llama-cli` and `llama-finetune-lora` |
 
 ## Important Caveats
 
@@ -76,4 +91,3 @@ This repository is not an official QVAC or Hugging Face release. It is a reprodu
 - Hugging Face article: [LoRA Fine-Tuning BitNet b1.58 LLMs on Heterogeneous Edge GPUs via QVAC Fabric](https://huggingface.co/blog/qvac/fabric-llm-finetune-bitnet)
 - Upstream code: [tetherto/qvac-fabric-llm.cpp](https://github.com/tetherto/qvac-fabric-llm.cpp)
 - Model collection: [qvac/fabric-llm-finetune-bitnet](https://huggingface.co/qvac/fabric-llm-finetune-bitnet)
-
